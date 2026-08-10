@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Fase 1 — Maxicréditos</title>
+    <style>
+        :root {
+            --p: #1565C0;
+            --s: #2E7D32;
+            --a: #F57F17;
+            --r: #C62828;
+            --fondo: #f5f7fa;
+            --borde: #e0e0e0;
+            --sombra: 0 3px 10px rgba(0,0,0,0.08);
+            --azul-fondo: #E3F2FD;
+            --amarillo-aviso: #FFF8E1;
+        }
+        * {margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI', sans-serif;}
+        body {background:var(--fondo); padding:20px; max-width:1100px; margin:0 auto;}
+        header {background:white; padding:25px; border-radius:12px; box-shadow:var(--sombra); margin-bottom:25px; border-top:4px solid var(--p);}
+        h1 {color:var(--p); font-size:1.6rem;}
+        h2 {color:var(--p); font-size:1.15rem; margin:0 0 12px; padding-bottom:6px; border-bottom:2px solid var(--borde);}
+        h3 {font-size:1rem; margin:10px 0 6px; color:#333;}
+        .tarjeta {background:white; border-radius:12px; padding:20px; box-shadow:var(--sombra); margin-bottom:20px;}
+        .barra-contenedor {height:26px; background:#e9ecef; border-radius:13px; overflow:hidden; margin:8px 0;}
+        .barra-llenado {height:100%; background:linear-gradient(90deg,var(--p),var(--s)); width:0%; border-radius:13px; display:flex; align-items:center; justify-content:center; color:white; font-weight:bold; font-size:.85rem; transition:width .4s ease;}
+        .fila-avance {display:flex; justify-content:space-between; align-items:center; margin-bottom:5px; flex-wrap:wrap; gap:8px;}
+        .actividad {border:1px solid var(--borde); border-radius:10px; padding:16px; margin-bottom:14px;}
+        .cabecera-act {display:flex; align-items:flex-start; gap:12px; margin-bottom:10px; flex-wrap:wrap;}
+        .check-act {width:22px; height:22px; cursor:pointer; margin-top:2px;}
+        .etiqueta {display:inline-block; padding:3px 10px; border-radius:12px; font-size:.8rem; font-weight:500; margin-left:8px;}
+        .et-pend {background:#fff3cd; color:#856404;}
+        .et-listo {background:#d4edda; color:#155724;}
+        textarea, input[type="text"], select {width:100%; padding:10px; border:1px solid #ccc; border-radius:6px; font-size:.95rem; margin-top:4px;}
+        textarea {min-height:90px; resize:vertical;}
+        .pestañas {display:flex; gap:8px; margin:12px 0; flex-wrap:wrap;}
+        .tab {padding:7px 14px; background:#eee; border-radius:18px; cursor:pointer; font-size:.9rem;}
+        .tab.activa {background:var(--p); color:white;}
+        .cont-tab {display:none; margin-top:10px;}
+        .cont-tab.activo {display:block; animation:aparece .3s ease;}
+        @keyframes aparece {from{opacity:0} to{opacity:1}}
+        .fila-colab {display:flex; gap:8px; flex-wrap:wrap; margin:6px 0; align-items:center;}
+        .fila-colab input {flex:1; min-width:140px;}
+        .fila-colab select {width:130px;}
+        .resumen-azul {background:var(--azul-fondo); border-left:4px solid var(--p); padding:14px; border-radius:8px; margin-bottom:15px; line-height:1.6;}
+        .contraseña-panel {text-align:center; margin-bottom:15px; padding:12px; background:#fef3c7; border-radius:8px; border:2px solid #f59e0b;}
+        .info-tiempo {background:#f8f9fa; border-left:3px solid #999; padding:8px 12px; margin:8px 0; font-size:.9rem; color:#444;}
+        .zona-carga {border:2px dashed #ccc; padding:20px; border-radius:10px; text-align:center; margin:15px 0; display:none;}
+        .zona-carga.visible {display:block;}
+        .caja-exito {display:none; border:2px solid #2E7D32; background:#E8F5E9; padding:20px; border-radius:10px; margin:15px 0;}
+        .caja-exito.visible {display:block;}
+        .aviso-vista {background:#FFF8E1; border-left:3px solid var(--a); padding:10px 14px; border-radius:6px; margin-bottom:15px;}
+        .aviso-vista.oculto {display:none;}
+        .metodo-entrevista {background:#E3F2FD; border-left:3px solid #1565C0; padding:12px; border-radius:6px; margin-bottom:12px;}
+        .contador-entrevistas {display:flex; gap:15px; flex-wrap:wrap; margin:10px 0;}
+        .caja-contador {flex:1; min-width:120px; text-align:center; padding:12px; border-radius:10px;}
+        footer {text-align:center; margin-top:30px; font-size:.9rem; color:#777;}
+        button {cursor:pointer;}
+    </style>
+</head>
+<body>
+
+<div class="contraseña-panel">
+    <strong>🔐 ACCESO AL SISTEMA</strong><br>
+    Sin contraseña → Solo vista / Con contraseña → Edición completa<br>
+    <input type="password" id="clave-acceso" placeholder="Escribe la contraseña aquí" style="width:260px; margin:8px; padding:8px;">
+    <button onclick="desbloquearEdicion()" style="padding:8px 16px; background:var(--p); color:white; border:none; border-radius:6px; font-weight:bold;">Ingresar</button>
+    <small style="margin-left:8px; color:#666;">Contraseña: maxicreditos2026</small>
+</div>
+
+<header>
+    <h1>📊 DASHBOARD — FASE 1: DIAGNÓSTICO Y ALINEACIÓN</h1>
+    <p><strong>Empresa:</strong> Maxicréditos | <strong>Consultoría:</strong> Fase 1 — 6 Pasos</p>
+    <div id="aviso-vista" class="aviso-vista oculto">
+        👁️ <strong>MODO SOLO LECTURA:</strong> Para editar ingrese la contraseña.
+    </div>
+</header>
+
+<div class="tarjeta">
+    <div class="fila-avance">
+        <strong>📈 Avance Global de la Fase 1 (6 Pasos)</strong>
+        <span id="porcentaje-global"><strong>0%</strong> — 0 de 6 actividades completadas</span>
+    </div>
+    <div class="barra-contenedor"><div id="barra-global" class="barra-llenado">0%</div></div>
+    <div style="margin-top:8px; font-size:.9rem; color:#666;">Última actualización: <span id="fecha-hoy"></span></div>
+</div>
+
+<!-- ====================================================== -->
+<!-- PASO 1 → ACTA DE ALINEACIÓN -->
+<!-- ====================================================== -->
+<div class="tarjeta actividad" id="act1">
+    <div class="cabecera-act">
+        <input type="checkbox" class="check-act" data-num="1" onchange="actualizarTodo()">
+        <div style="flex:1;">
+            <h3>📄 PASO 1: Acta de Alineación Estratégica</h3>
+            <p style="color:#555; font-size:.9rem;">Formato de acuerdo y alcances — documento firmado</p>
+            <div class="info-tiempo">⏱️ Tiempo estimado: <strong>2 horas</strong> | 📍 Presencia: <strong>Oficina central</strong></div>
+        </div>
+        <span class="etiqueta et-pend" id="etq1">Pendiente</span>
+    </div>
+
+    <div class="pestañas">
+        <div class="tab activa" onclick="cambiarTab('act1-info')">📄 Información</div>
+        <div class="tab" onclick="cambiarTab('act1-firma')">✍️ Acta Firmada</div>
+    </div>
+
+    <div id="act1-info" class="cont-tab activo">
+        <div class="resumen-azul">
+            <strong>📌 Instrucciones:</strong><br>
+            1. Escribe la contraseña: <code>maxicreditos2026</code><br>
+            2. Pulsa <strong>Ingresar</strong><br>
+            3. Ve a la pestaña <strong>"✍️ Acta Firmada"</strong><br>
+            4. Sube tu acta firmada en PDF, Word o imagen.
+        </div>
+    </div>
+
+    <div id="act1-firma" class="cont-tab">
+        <div id="zona-carga-acta" class="zona-carga">
+            <p>📎 <strong>Cargar Acta Firmada</strong></p>
+            <input type="file" id="archivo-acta" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" onchange="guardarArchivo(this)">
+            <p style="font-size:.85rem; color:#666; margin-top:8px;">Formatos permitidos: PDF, Word (.doc/.docx) o Imagen (.jpg/.png)</p>
+        </div>
+        <div id="mensaje-espera" style="text-align:center; padding:15px; color:#777;">
+            ⚠️ Ingresa la contraseña primero → luego ve a esta pestaña.
+        </div>
+        <div id="caja-exito-acta" class="caja-exito">
+            ✅ <strong>Acta cargada correctamente ✅</strong><br><br>
+            📄 Archivo: <span id="nombre-archivo"></span><br>
+            📅 Fecha de carga: <span id="fecha-carga"></span><br><br>
+            <button style="padding:10px 20px; background:#E8F5E9; color:#1B5E20; border:2px solid #2E7D32; border-radius:8px; font-weight:bold;" onclick="descargarArchivo()">📥 DESCARGAR ACTA</button>
+        </div>
+    </div>
+</div>
+
+<!-- ====================================================== -->
+<!-- PASO 2 → ENTREVISTAS A LOS COLABORADORES -->
+<!-- ====================================================== -->
+<div class="tarjeta actividad" id="act2">
+    <div class="cabecera-act">
+        <input type="checkbox" class="check-act" data-num="2" onchange="actualizarTodo()">
+        <div style="flex:1;">
+            <h3>👥 PASO 2: Entrevistas a los Colaboradores</h3>
+            <p style="color:#555; font-size:.9rem;">Fichas individuales de los 14 colaboradores + Mapa de Talento</p>
+            <div class="info-tiempo">⏱️ Tiempo estimado: <strong>7-8 horas</strong> | 📍 Presencia: <strong>2-3 días, máximo 2 horas por agencia</strong></div>
+        </div>
+        <span class="etiqueta et-pend" id="etq2">Pendiente</span>
+    </div>
+
+    <div class="metodo-entrevista">
+        <strong>✅ Métodos de trabajo establecidos:</strong><br>
+        • 📋 <strong>Entrevistas Presenciales:</strong> directamente en las agencias con el personal clave<br>
+        • 📝 <strong>Google Forms:</strong> formulario digital compartido para el resto del personal<br>
+        Ambos métodos recaban la misma información. Se registrará cada colaborador según la modalidad aplicada.
+    </div>
+
+    <div class="contador-entrevistas">
+        <div class="caja-contador" style="background:#E3F2FD; color:#0D47A1;">
+            <span style="display:block; font-size:.85rem;">Total</span>
+            <strong id="cont-total" style="font-size:1.4rem;">0/14</strong>
+        </div>
+        <div class="caja-contador" style="background:#E8F5E9; color:#2E7D32;">
+            <span style="display:block; font-size:.85rem;">Presencial</span>
+            <strong id="cont-presencial" style="font-size:1.4rem;">0</strong>
+        </div>
+        <div class="caja-contador" style="background:#FFF8E1; color:#F57F17;">
+            <span style="display:block; font-size:.85rem;">Google Forms</span>
+            <strong id="cont-forms" style="font-size:1.4rem;">0</strong>
+        </div>
+        <div class="caja-contador" style="background:#FFEBEE; color:#C62828;">
+            <span style="display:block; font-size:.85rem;">Avance</span>
+            <strong id="cont-avance" style="font-size:1.4rem;">0%</strong>
+        </div>
+    </div>
+
+    <div class="barra-contenedor"><div id="barra-entrevistas" class="barra-llenado">0%</div></div>
+
+    <div class="pestañas">
+        <div class="tab activa" onclick="cambiarTab('entrevista-form')">📋 Enlace Forms</div>
+        <div class="tab" onclick="cambiarTab('entrevista-registro')">📝 Registro</div>
+        <div class="tab" onclick="cambiarTab('entrevista-resultado')">✅ Hallazgos</div>
+    </div>
+
+    <div id="entrevista-form" class="cont-tab activo">
+        <label>Enlace del formulario digital compartido al personal:</label>
+        <input type="text" id="enlace-forms" placeholder="Pega aquí el enlace de Google Forms..." oninput="guardarDatos()">
+    </div>
+
+    <div id="entrevista-registro" class="cont-tab">
+        <p>Registra cada colaborador según el método aplicado:</p>
+        <div id="lista-colaboradores"></div>
+        <button onclick="agregarColaborador()" style="padding:8px 14px; background:var(--p); color:white; border:none; border-radius:6px; margin-top:10px;">➕ Agregar Colaborador</button>
+    </div>
+
+    <div id="entrevista-resultado" class="cont-tab">
+        <label>Resumen de hallazgos y Mapa de Talento:</label>
+        <textarea id="entrevista-hallazgos" placeholder="Funciones reales, dificultades, sugerencias, clima laboral, perfil de cada colaborador..." oninput="guardarDatos()"></textarea>
+    </div>
+</div>
+
+<footer>
+    <p>Consultoría de Gestión Administrativa y Talento Humano — Maxicréditos | Fase 1</p>
+</footer>
+
+<script>
+// =====================================================
+// CONFIGURACIÓN GENERAL
+// =====================================================
+const CLAVE_CORRECTA = "maxicreditos2026";
+let archivoGuardado = null;
+let nombreArchivoGuardado = "";
+let MODO_EDITOR = false;
+let colaboradores = [];
+
+// =====================================================
+// CONTRASEÑA Y ACCESO
+// =====================================================
+function desbloquearEdicion() {
+    const clave = document.getElementById("clave-acceso").value.trim();
+    if (clave === CLAVE_CORRECTA) {
+        MODO_EDITOR = true;
+        document.getElementById("zona-carga-acta").classList.add("visible");
+        document.getElementById("mensaje-espera").style.display = "none";
+        document.getElementById("aviso-vista").classList.add("oculto");
+        if (archivoGuardado) {
+            document.getElementById("zona-carga-acta").classList.remove("visible");
+            document.getElementById("caja-exito-acta").classList.add("visible");
+        }
+        alert("✅ Acceso concedido. Ve a la pestaña 'Acta Firmada' para subir.");
+    } else {
+        MODO_EDITOR = false;
+        document.getElementById("aviso-vista").classList.remove("oculto");
+        alert("❌ Contraseña incorrecta.");
+    }
+}
+
+// =====================================================
+// CAMBIAR PESTAÑAS
+// =====================================================
+function cambiarTab(idActivo) {
+    const padre = event.target.closest(".actividad");
+    padre.querySelectorAll(".tab").forEach(t => t.classList.remove("activa"));
+    padre.querySelectorAll(".cont-tab").forEach(c => c.classList.remove("activo"));
+    event.target.classList.add("activa");
+    document.getElementById(idActivo).classList.add("activo");
+}
+
+// =====================================================
+// SISTEMA DE ACTA CARGA / DESCARGA
+// =====================================================
+function guardarArchivo(input) {
+    if (!input.files.length) return;
+    const archivo = input.files[0];
+    nombreArchivoGuardado = archivo.name;
+    const lector = new FileReader();
+    lector.onload = function(e) {
+        archivoGuardado = e.target.result;
+        document.getElementById("zona-carga-acta").classList.remove("visible");
+        document.getElementById("caja-exito-acta").classList.add("visible");
+        document.getElementById("nombre-archivo").textContent = nombreArchivoGuardado;
+        document.getElementById("fecha-carga").textContent = new Date().toLocaleString("es-GT");
+        guardarDatos();
+    };
+    lector.readAsDataURL(archivo);
+}
+
+function descargarArchivo() {
+    if (!archivoGuardado) { alert("No hay acta cargada."); return; }
+    const a = document.createElement("a");
+    a.href = archivoGuardado;
+    a.download = nombreArchivoGuardado || "ACTA_DE_ALINEACION.pdf";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+}
+
+// =====================================================
+// SISTEMA DEL PASO 2 — COLABORADORES
+// =====================================================
+function agregarColaborador() {
+    if (colaboradores.length >= 14) { alert("Ya registraste los 14 colaboradores."); return; }
+    colaboradores.push({nombre:"", agencia:"", tipo:"presencial"});
+    renderizarColaboradores();
+    guardarDatos();
+}
+
+function renderizarColaboradores() {
+    const cont = document.getElementById("lista-colaboradores");
+    cont.innerHTML = "";
+    let pres = 0, forms = 0;
+    colaboradores.forEach((c, i) => {
+        if (c.tipo === "presencial") pres++; else forms++;
+        const div = document.createElement("div");
+        div.className = "fila-colab";
+        div.innerHTML = `
+            <input type="text" placeholder="Nombre del colaborador" value="${c.nombre}"
+                onchange="actualizarColab(${i}, 'nombre', this.value)" ${!MODO_EDITOR?"disabled":""}>
+            <input type="text" placeholder="Agencia" value="${c.agencia}"
+                onchange="actualizarColab(${i}, 'agencia', this.value)" ${!MODO_EDITOR?"disabled":""}>
+            <select onchange="actualizarColab(${i}, 'tipo', this.value)" ${!MODO_EDITOR?"disabled":""}>
+                <option value="presencial" ${c.tipo==="presencial"?"selected":""}>📋 Presencial</option>
+                <option value="forms" ${c.tipo==="forms"?"selected":""}>📝 Google Forms</option>
+            </select>`;
+        cont.appendChild(div);
+    });
+    const total = colaboradores.length;
+    const avance = Math.round((total/14)*100);
+    document.getElementById("cont-total").textContent = `${total}/14`;
+    document.getElementById("cont-presencial").textContent = pres;
+    document.getElementById("cont-forms").textContent = forms;
+    document.getElementById("cont-avance").textContent = `${avance}%`;
+    document.getElementById("barra-entrevistas").style.width = `${avance}%`;
+    document.getElementById("barra-entrevistas").textContent = `${avance}%`;
+}
+
+function actualizarColab(i, campo, valor) {
+    colaboradores[i][campo] = valor;
+    guardarDatos();
+    renderizarColaboradores();
+}
+
+// =====================================================
+// AVANCE GLOBAL
+// =====================================================
+function actualizarTodo() {
+    const checks = document.querySelectorAll(".check-act");
+    const total = checks.length;
+    const completados = Array.from(checks).filter(c => c.checked).length;
+    const porcentaje = Math.round((completados/total)*100);
+    document.getElementById("barra-global").style.width = porcentaje+"%";
+    document.getElementById("barra-global").textContent = porcentaje+"%";
+    document.getElementById("porcentaje-global").innerHTML = `<strong>${porcentaje}%</strong> — ${completados} de ${total} actividades completadas`;
+    for(let a=1; a<=6; a++) {
+        const chk = document.querySelector(`[data-num="${a}"]`);
+        const etq = document.getElementById(`etq${a}`);
+        if(!chk || !etq) continue;
+        chk.checked ? (etq.textContent="✅ Completado", etq.className="etiqueta et-listo")
+                    : (etq.textContent="Pendiente", etq.className="etiqueta et-pend");
+    }
+    guardarDatos();
+}
+
+// =====================================================
+// GUARDAR Y CARGAR TODO EN EL NAVEGADOR
+// =====================================================
+function guardarDatos() {
+    const datos = {
+        checks: Array.from(document.querySelectorAll(".check-act")).map(c => c.checked),
+        archivo_acta: archivoGuardado,
+        nombre_archivo: nombreArchivoGuardado,
+        fecha_carga: document.getElementById("fecha-carga")?.textContent || "",
+        enlace_forms: document.getElementById("enlace-forms")?.value || "",
+        colaboradores: colaboradores,
+        hallazgos: document.getElementById("entrevista-hallazgos")?.value || ""
+    };
+    localStorage.setItem("dashboard-maxicreditos", JSON.stringify(datos));
+}
+
+function cargarDatos() {
+    const guardado = localStorage.getItem("dashboard-maxicreditos");
+    if (!guardado) return;
+    const d = JSON.parse(guardado);
+    if (d.checks) d.checks.forEach((c, i) => {
+        const chk = document.querySelector(`[data-num="${i+1}"]`);
+        if(chk) chk.checked = c;
+    });
+    if (d.archivo_acta) {
+        archivoGuardado = d.archivo_acta;
+        nombreArchivoGuardado = d.nombre_archivo;
+        document.getElementById("caja-exito-acta").classList.add("visible");
+        document.getElementById("nombre-archivo").textContent = d.nombre_archivo;
+        document.getElementById("fecha-carga").textContent = d.fecha_carga || "";
+        document.getElementById("mensaje-espera").style.display = "none";
+    }
+    if (d.enlace_forms) document.getElementById("enlace-forms").value = d.enlace_forms;
+    if (d.colaboradores) { colaboradores = d.colaboradores; renderizarColaboradores(); }
+    if (d.hallazgos) document.getElementById("entrevista-hallazgos").value = d.hallazgos;
+    actualizarTodo();
+}
+
+// =====================================================
+// INICIO AUTOMÁTICO
+// =====================================================
+window.onload = function() {
+    document.getElementById("fecha-hoy").textContent = new Date().toLocaleString("es-GT");
+    cargarDatos();
+    document.getElementById("aviso-vista").classList.remove("oculto");
+};
+</script>
+</body>
+</html>

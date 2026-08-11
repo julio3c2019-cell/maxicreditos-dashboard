@@ -108,18 +108,18 @@
     <div id="act1-info" class="cont-tab activo">
         <div class="resumen-azul">
             <strong>📌 Flujo de trabajo:</strong><br><br>
-            <strong>1️⃣ TU:</strong> Subes la plantilla lista en la pestaña <strong>"📋 Plantilla del Acta"</strong><br>
-            <strong>2️⃣ LA OTRA PERSONA:</strong> Descarga la plantilla, la firma y la escanea<br>
-            <strong>3️⃣ LA OTRA PERSONA:</strong> Entra con contraseña → ve a <strong>"✍️ Acta Firmada"</strong> → sube el documento firmado<br>
+            <strong>1️⃣ Consultor:</strong> Subirá la plantilla lista en la pestaña <strong>"📋 Plantilla del Acta"</strong><br>
+            <strong>2️⃣ Gerente de Maxicreditos:</strong> Descarga la plantilla, la firma y la escanea<br>
+            <strong>3️⃣ Gerente de MAxicreditos:</strong> Entra con contraseña → ve a <strong>"✍️ Acta Firmada"</strong> → sube el documento firmado<br>
             ✅ Quedan ambos archivos guardados: la plantilla y el acta ya firmada
         </div>
     </div>
 
-    <!-- PESTAÑA 2: PLANTILLA — TÚ LA SUBES AQUÍ -->
+    <!-- PESTAÑA 2: PLANTILLA -->
     <div id="act1-plantilla" class="cont-tab">
-        <!-- Zona para que TÚ subas la plantilla -->
+        <!-- Zona para la plantilla -->
         <div id="zona-carga-plantilla" class="zona-carga">
-            <p>📎 <strong>🔴 TU: Sube aquí la Plantilla del Acta (sin firmar)</strong></p>
+            <p>📎 <strong>🔴 Subir aquí la Plantilla del Acta (sin firmar)</strong></p>
             <input type="file" id="archivo-plantilla" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" onchange="guardarPlantilla(this)">
             <p style="font-size:.85rem; color:#666; margin-top:8px;">Formatos: PDF, Word o Imagen</p>
         </div>
@@ -137,16 +137,16 @@
         </div>
     </div>
 
-    <!-- PESTAÑA 3: ACTA FIRMADA → La otra persona la sube aquí -->
+    <!-- PESTAÑA 3: ACTA FIRMADA → Gerente de Maxicreditos sube el documento firmado -->
     <div id="act1-firma" class="cont-tab">
         <div id="zona-carga-firmada" class="zona-carga">
-            <p>📎 <strong>🔴 Sube aquí el Acta YA FIRMADA</strong></p>
+            <p>📎 <strong>🔴 Subir aquí el Acta YA FIRMADA</strong></p>
             <input type="file" id="archivo-firmado" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" onchange="guardarActaFirmada(this)">
-            <p style="font-size:.85rem; color:#666; margin-top:8px;">Sube el documento firmado y escaneado</p>
+            <p style="font-size:.85rem; color:#666; margin-top:8px;">Subir el documento firmado y escaneado</p>
         </div>
 
         <div id="mensaje-espera-firmada" style="text-align:center; padding:15px; color:#777;">
-            ⚠️ Escribe la contraseña arriba → pulsa "Ingresar" → regresa aquí para subir el acta firmada.
+            ⚠️ Escriba la contraseña arriba → pulsa "Ingresar" → regresa aquí para subir el acta firmada.
         </div>
 
         <div id="caja-acta-firmada" class="caja-exito">

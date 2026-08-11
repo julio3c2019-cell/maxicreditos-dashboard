@@ -14,6 +14,7 @@
             --borde: #e0e0e0;
             --sombra: 0 3px 10px rgba(0,0,0,0.08);
             --azul-fondo: #E3F2FD;
+            --verde-fondo: #E8F5E9;
         }
         * {margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI', sans-serif;}
         body {background:var(--fondo); padding:20px; max-width:1100px; margin:0 auto;}
@@ -30,7 +31,7 @@
         .etiqueta {display:inline-block; padding:3px 10px; border-radius:12px; font-size:.8rem; font-weight:500; margin-left:8px;}
         .et-pend {background:#fff3cd; color:#856404;}
         .et-listo {background:#d4edda; color:#155724;}
-        textarea, input[type="text"], select {width:100%; padding:10px; border:1px solid #ccc; border-radius:6px; font-size:.95rem; margin-top:4px;}
+        textarea, input[type="text"] {width:100%; padding:10px; border:1px solid #ccc; border-radius:6px; font-size:.95rem; margin-top:4px;}
         textarea {min-height:90px; resize:vertical;}
         .pestañas {display:flex; gap:8px; margin:12px 0; flex-wrap:wrap;}
         .tab {padding:7px 14px; background:#eee; border-radius:18px; cursor:pointer; font-size:.9rem;}
@@ -39,13 +40,11 @@
         .cont-tab.activo {display:block; animation:aparece .3s ease;}
         @keyframes aparece {from{opacity:0} to{opacity:1}}
         .resumen-azul {background:var(--azul-fondo); border-left:4px solid var(--p); padding:14px; border-radius:8px; margin-bottom:15px; line-height:1.6;}
+        .resumen-verde {background:var(--verde-fondo); border-left:4px solid var(--s); padding:14px; border-radius:8px; margin-bottom:15px; line-height:1.6;}
         .contraseña-panel {text-align:center; margin-bottom:15px; padding:12px; background:#fef3c7; border-radius:8px; border:2px solid #f59e0b;}
         .info-tiempo {background:#f8f9fa; border-left:3px solid #999; padding:8px 12px; margin:8px 0; font-size:.9rem; color:#444;}
-        .zona-carga {border:2px dashed #ccc; padding:20px; border-radius:10px; text-align:center; margin:15px 0; display:none;}
-        .zona-carga.visible {display:block;}
-        .caja-exito {display:none; border:2px solid #2E7D32; background:#E8F5E9; padding:20px; border-radius:10px; margin:15px 0;}
-        .caja-exito.visible {display:block;}
-        .caja-plantilla {border:2px solid #1565C0; background:#E3F2FD; padding:20px; border-radius:10px; margin:15px 0;}
+        .caja-enlace {border:2px solid #ccc; padding:18px; border-radius:10px; margin:12px 0;}
+        .caja-exito {border:2px solid #2E7D32; background:#E8F5E9; padding:20px; border-radius:10px; margin:15px 0;}
         .aviso-vista {background:#FFF8E1; border-left:3px solid var(--a); padding:10px 14px; border-radius:6px; margin-bottom:15px;}
         .aviso-vista.oculto {display:none;}
         .metodo-entrevista {background:#E3F2FD; border-left:3px solid #1565C0; padding:12px; border-radius:6px; margin-bottom:12px;}
@@ -55,6 +54,8 @@
         .btn-azul {background:var(--p); color:white;}
         .btn-verde {background:#E8F5E9; color:#1B5E20; border:2px solid #2E7D32;}
         footer {text-align:center; margin-top:30px; font-size:.9rem; color:#777;}
+        a.enlace-desc {color:#1565C0; font-weight:500; text-decoration:none;}
+        a.enlace-desc:hover {text-decoration:underline;}
     </style>
 </head>
 <body>
@@ -71,7 +72,7 @@
     <h1>📊 DASHBOARD — FASE 1: DIAGNÓSTICO Y ALINEACIÓN</h1>
     <p><strong>Empresa:</strong> Maxicréditos | <strong>Consultoría:</strong> Fase 1 — 6 Pasos</p>
     <div id="aviso-vista" class="aviso-vista oculto">
-        👁️ <strong>MODO SOLO LECTURA:</strong> Para subir archivos ingrese la contraseña.
+        👁️ <strong>MODO SOLO LECTURA:</strong> Para editar ingrese la contraseña.
     </div>
 </header>
 
@@ -92,7 +93,7 @@
         <input type="checkbox" class="check-act" data-num="1" onchange="actualizarTodo()">
         <div style="flex:1;">
             <h3>📄 PASO 1: Acta de Alineación Estratégica</h3>
-            <p style="color:#555; font-size:.9rem;">Subir plantilla → Descargar, firmar → Subir acta firmada</p>
+            <p style="color:#555; font-size:.9rem;">Descargar plantilla → Firmar → Subir acta firmada</p>
             <div class="info-tiempo">⏱️ Tiempo estimado: <strong>2 horas</strong> | 📍 Presencia: <strong>Oficina central</strong></div>
         </div>
         <span class="etiqueta et-pend" id="etq1">Pendiente</span>
@@ -108,52 +109,58 @@
     <div id="act1-info" class="cont-tab activo">
         <div class="resumen-azul">
             <strong>📌 Flujo de trabajo:</strong><br><br>
-            <strong>1️⃣ Consultor:</strong> Subirá la plantilla lista en la pestaña <strong>"📋 Plantilla del Acta"</strong><br>
-            <strong>2️⃣ Gerente de Maxicreditos:</strong> Descarga la plantilla, la firma y la escanea<br>
-            <strong>3️⃣ Gerente de MAxicreditos:</strong> Entra con contraseña → ve a <strong>"✍️ Acta Firmada"</strong> → sube el documento firmado<br>
-            ✅ Quedan ambos archivos guardados: la plantilla y el acta ya firmada
+            <strong>1️⃣ TU:</strong> Subes tu plantilla a Google Drive → copias el enlace → lo pegas abajo → Guardar<br>
+            <strong>2️⃣ LA OTRA PERSONA:</strong> Entra aquí → descarga la plantilla → la firma<br>
+            <strong>3️⃣ LA OTRA PERSONA:</strong> Sube el acta firmada a Google Drive → te pasa el enlace<br>
+            <strong>4️⃣ TU:</strong> Pegas el enlace del acta firmada abajo → Guardar<br><br>
+            ✅ <strong>¡Ambos enlaces quedan aquí guardados para SIEMPRE!</strong> Se ven desde cualquier computadora.
         </div>
     </div>
 
     <!-- PESTAÑA 2: PLANTILLA -->
     <div id="act1-plantilla" class="cont-tab">
-        <!-- Zona para la plantilla -->
-        <div id="zona-carga-plantilla" class="zona-carga">
-            <p>📎 <strong>🔴 Subir aquí la Plantilla del Acta (sin firmar)</strong></p>
-            <input type="file" id="archivo-plantilla" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" onchange="guardarPlantilla(this)">
-            <p style="font-size:.85rem; color:#666; margin-top:8px;">Formatos: PDF, Word o Imagen</p>
+        <div class="resumen-azul">
+            <strong>📋 Cómo obtener el enlace:</strong><br>
+            1. Sube tu archivo a <strong>Google Drive</strong><br>
+            2. Haz clic derecho sobre el archivo → <strong>"Compartir"</strong><br>
+            3. Cambia a: <strong>"Cualquiera con el enlace"</strong><br>
+            4. Copia el enlace → pégalo abajo 👇
         </div>
 
-        <div id="mensaje-espera-plantilla" style="text-align:center; padding:15px; color:#777;">
-            ⚠️ Escribe la contraseña arriba → pulsa "Ingresar" → regresa aquí para subir la plantilla.
-        </div>
-
-        <!-- Plantilla cargada → todos la descargan -->
-        <div id="caja-plantilla-cargada" class="caja-plantilla">
-            ✅ <strong>✅ PLANTILLA CARGADA — LISTA PARA DESCARGAR</strong><br><br>
-            📄 Archivo: <span id="nombre-plantilla"></span><br>
-            📅 Fecha de carga: <span id="fecha-plantilla"></span><br><br>
-            <button class="btn-azul" onclick="descargarPlantilla()">📥 DESCARGAR PLANTILLA</button>
+        <div class="caja-enlace">
+            <label><strong>🔗 Enlace de la Plantilla:</strong></label>
+            <input type="text" id="enlace-plantilla" placeholder="Pega aquí el enlace de Google Drive..." oninput="guardarDatos()">
+            <button class="btn-azul" onclick="guardarPlantilla()" style="margin-top:10px;">💾 GUARDAR PLANTILLA</button>
+            
+            <div id="plantilla-lista" style="display:none; margin-top:15px;">
+                <div class="resumen-verde">
+                    ✅ <strong>Plantilla disponible para descargar:</strong><br>
+                    <a id="link-plantilla" href="#" target="_blank" class="enlace-desc">📥 DESCARGAR PLANTILLA</a>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- PESTAÑA 3: ACTA FIRMADA → Gerente de Maxicreditos sube el documento firmado -->
+    <!-- PESTAÑA 3: ACTA FIRMADA -->
     <div id="act1-firma" class="cont-tab">
-        <div id="zona-carga-firmada" class="zona-carga">
-            <p>📎 <strong>🔴 Subir aquí el Acta YA FIRMADA</strong></p>
-            <input type="file" id="archivo-firmado" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" onchange="guardarActaFirmada(this)">
-            <p style="font-size:.85rem; color:#666; margin-top:8px;">Subir el documento firmado y escaneado</p>
+        <div class="resumen-azul">
+            <strong>✍️ Cuando ya tengan el acta firmada:</strong><br>
+            1. Sube el documento firmado a <strong>Google Drive</strong><br>
+            2. Compártelo: <strong>"Cualquiera con el enlace"</strong><br>
+            3. Copia el enlace → pégalo abajo 👇
         </div>
 
-        <div id="mensaje-espera-firmada" style="text-align:center; padding:15px; color:#777;">
-            ⚠️ Escriba la contraseña arriba → pulsa "Ingresar" → regresa aquí para subir el acta firmada.
-        </div>
-
-        <div id="caja-acta-firmada" class="caja-exito">
-            ✅ <strong>✅ ACTA FIRMADA CARGADA Y GUARDADA</strong><br><br>
-            📄 Archivo: <span id="nombre-firmado"></span><br>
-            📅 Fecha de carga: <span id="fecha-firmado"></span><br><br>
-            <button class="btn-verde" onclick="descargarActaFirmada()">📥 DESCARGAR ACTA FIRMADA</button>
+        <div class="caja-enlace">
+            <label><strong>🔗 Enlace del Acta Firmada:</strong></label>
+            <input type="text" id="enlace-acta" placeholder="Pega aquí el enlace del acta firmada..." oninput="guardarDatos()">
+            <button class="btn-verde" onclick="guardarActaFirmada()" style="margin-top:10px;">💾 GUARDAR ACTA FIRMADA</button>
+            
+            <div id="acta-lista" style="display:none; margin-top:15px;">
+                <div class="caja-exito">
+                    ✅ <strong>✅ ACTA FIRMADA DISPONIBLE:</strong><br>
+                    <a id="link-acta" href="#" target="_blank" class="enlace-desc">📥 DESCARGAR ACTA FIRMADA</a>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -232,8 +239,6 @@
 // CONFIGURACIÓN
 // =====================================================
 const CLAVE_CORRECTA = "maxicreditos2026";
-let plantilla = {datos:null, nombre:"", fecha:""};
-let actaFirmada = {datos:null, nombre:"", fecha:""};
 let MODO_EDITOR = false;
 let colaboradores = [];
 
@@ -244,21 +249,8 @@ function desbloquearEdicion() {
     const clave = document.getElementById("clave-acceso").value.trim();
     if (clave === CLAVE_CORRECTA) {
         MODO_EDITOR = true;
-        document.getElementById("zona-carga-plantilla").classList.add("visible");
-        document.getElementById("zona-carga-firmada").classList.add("visible");
-        document.getElementById("mensaje-espera-plantilla").style.display = "none";
-        document.getElementById("mensaje-espera-firmada").style.display = "none";
         document.getElementById("aviso-vista").classList.add("oculto");
-        // Si ya hay archivos cargados, mostrar descarga
-        if (plantilla.datos) {
-            document.getElementById("zona-carga-plantilla").classList.remove("visible");
-            document.getElementById("caja-plantilla-cargada").classList.add("visible");
-        }
-        if (actaFirmada.datos) {
-            document.getElementById("zona-carga-firmada").classList.remove("visible");
-            document.getElementById("caja-acta-firmada").classList.add("visible");
-        }
-        alert("✅ Acceso concedido. Ahora puedes subir los archivos.");
+        alert("✅ Acceso concedido. Ahora puedes pegar los enlaces.");
     } else {
         MODO_EDITOR = false;
         document.getElementById("aviso-vista").classList.remove("oculto");
@@ -278,76 +270,42 @@ function cambiarTab(idActivo) {
 }
 
 // =====================================================
-// SUBIR PLANTILLA (TÚ)
+// GUARDAR PLANTILLA
 // =====================================================
-function guardarPlantilla(input) {
-    if (!input.files.length) return;
-    const arch = input.files[0];
-    plantilla.nombre = arch.name;
-    plantilla.fecha = new Date().toLocaleString("es-GT");
-    const lector = new FileReader();
-    lector.onload = e => {
-        plantilla.datos = e.target.result;
-        document.getElementById("zona-carga-plantilla").classList.remove("visible");
-        document.getElementById("caja-plantilla-cargada").classList.add("visible");
-        document.getElementById("nombre-plantilla").textContent = plantilla.nombre;
-        document.getElementById("fecha-plantilla").textContent = plantilla.fecha;
-        guardarDatos();
-        alert("✅ Plantilla cargada. Ya puede ser descargada.");
-    };
-    lector.readAsDataURL(arch);
+function guardarPlantilla() {
+    if (!MODO_EDITOR) { alert("⚠️ Escribe la contraseña primero."); return; }
+    const enlace = document.getElementById("enlace-plantilla").value.trim();
+    if (!enlace) { alert("Pega primero el enlace de la plantilla."); return; }
+    
+    document.getElementById("link-plantilla").href = enlace;
+    document.getElementById("plantilla-lista").style.display = "block";
+    guardarDatos();
+    alert("✅ Plantilla guardada. ¡Todos pueden descargarla desde cualquier lugar!");
 }
 
 // =====================================================
-// SUBIR ACTA FIRMADA (LA OTRA PERSONA)
+// GUARDAR ACTA FIRMADA
 // =====================================================
-function guardarActaFirmada(input) {
-    if (!input.files.length) return;
-    const arch = input.files[0];
-    actaFirmada.nombre = arch.name;
-    actaFirmada.fecha = new Date().toLocaleString("es-GT");
-    const lector = new FileReader();
-    lector.onload = e => {
-        actaFirmada.datos = e.target.result;
-        document.getElementById("zona-carga-firmada").classList.remove("visible");
-        document.getElementById("caja-acta-firmada").classList.add("visible");
-        document.getElementById("nombre-firmado").textContent = actaFirmada.nombre;
-        document.getElementById("fecha-firmado").textContent = actaFirmada.fecha;
-        // Marcar Paso 1 como completado
-        document.querySelector('[data-num="1"]').checked = true;
-        actualizarTodo();
-        guardarDatos();
-        alert("✅ Acta firmada cargada. ¡Proceso completado!");
-    };
-    lector.readAsDataURL(arch);
-}
-
-// =====================================================
-// DESCARGAR PLANTILLA
-// =====================================================
-function descargarPlantilla() {
-    if (!plantilla.datos) { alert("No hay plantilla cargada todavía."); return; }
-    const a = document.createElement("a");
-    a.href = plantilla.datos;
-    a.download = plantilla.nombre || "PLANTILLA_ACTA.pdf";
-    document.body.appendChild(a); a.click(); document.body.removeChild(a);
-}
-
-// =====================================================
-// DESCARGAR ACTA FIRMADA
-// =====================================================
-function descargarActaFirmada() {
-    if (!actaFirmada.datos) { alert("No hay acta firmada cargada todavía."); return; }
-    const a = document.createElement("a");
-    a.href = actaFirmada.datos;
-    a.download = actaFirmada.nombre || "ACTA_FIRMADA.pdf";
-    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+function guardarActaFirmada() {
+    if (!MODO_EDITOR) { alert("⚠️ Escribe la contraseña primero."); return; }
+    const enlace = document.getElementById("enlace-acta").value.trim();
+    if (!enlace) { alert("Pega primero el enlace del acta firmada."); return; }
+    
+    document.getElementById("link-acta").href = enlace;
+    document.getElementById("acta-lista").style.display = "block";
+    
+    // Marcar Paso 1 como completado
+    document.querySelector('[data-num="1"]').checked = true;
+    actualizarTodo();
+    guardarDatos();
+    alert("✅ Acta firmada registrada. ¡Disponible para todos!");
 }
 
 // =====================================================
 // PASO 2 — COLABORADORES
 // =====================================================
 function agregarColaborador() {
+    if (!MODO_EDITOR) { alert("⚠️ Escribe la contraseña primero."); return; }
     if (colaboradores.length >= 14) { alert("Ya registraste los 14 colaboradores."); return; }
     colaboradores.push({nombre:"", agencia:"", tipo:"presencial"});
     renderizarColaboradores();
@@ -363,7 +321,7 @@ function renderizarColaboradores() {
         const div = document.createElement("div");
         div.style = "display:flex; gap:8px; flex-wrap:wrap; margin:6px 0; align-items:center;";
         div.innerHTML = `
-            <input type="text" placeholder="Nombre" value="${c.nombre}"
+            <input type="text" placeholder="Nombre del colaborador" value="${c.nombre}"
                 onchange="actualizarColab(${i},'nombre',this.value)" style="flex:1; min-width:140px;" ${!MODO_EDITOR?"disabled":""}>
             <input type="text" placeholder="Agencia" value="${c.agencia}"
                 onchange="actualizarColab(${i},'agencia',this.value)" style="flex:1; min-width:120px;" ${!MODO_EDITOR?"disabled":""}>
@@ -416,8 +374,8 @@ function actualizarTodo() {
 function guardarDatos() {
     const datos = {
         checks: Array.from(document.querySelectorAll(".check-act")).map(c => c.checked),
-        plantilla: plantilla,
-        actaFirmada: actaFirmada,
+        enlacePlantilla: document.getElementById("enlace-plantilla")?.value || "",
+        enlaceActa: document.getElementById("enlace-acta")?.value || "",
         enlaceForms: document.getElementById("enlace-forms")?.value || "",
         colaboradores: colaboradores,
         hallazgos: document.getElementById("entrevista-hallazgos")?.value || ""
@@ -437,19 +395,17 @@ function cargarDatos() {
     });
     
     // Restaurar plantilla
-    if (d.plantilla && d.plantilla.datos) {
-        plantilla = d.plantilla;
-        document.getElementById("caja-plantilla-cargada").classList.add("visible");
-        document.getElementById("nombre-plantilla").textContent = plantilla.nombre;
-        document.getElementById("fecha-plantilla").textContent = plantilla.fecha;
+    if (d.enlacePlantilla) {
+        document.getElementById("enlace-plantilla").value = d.enlacePlantilla;
+        document.getElementById("link-plantilla").href = d.enlacePlantilla;
+        document.getElementById("plantilla-lista").style.display = "block";
     }
     
     // Restaurar acta firmada
-    if (d.actaFirmada && d.actaFirmada.datos) {
-        actaFirmada = d.actaFirmada;
-        document.getElementById("caja-acta-firmada").classList.add("visible");
-        document.getElementById("nombre-firmado").textContent = actaFirmada.nombre;
-        document.getElementById("fecha-firmado").textContent = actaFirmada.fecha;
+    if (d.enlaceActa) {
+        document.getElementById("enlace-acta").value = d.enlaceActa;
+        document.getElementById("link-acta").href = d.enlaceActa;
+        document.getElementById("acta-lista").style.display = "block";
     }
     
     // Restaurar Paso 2
